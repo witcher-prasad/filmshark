@@ -4,6 +4,7 @@ import HeroBanner from '../components/HeroBanner';
 import GenreFilterBar from '../components/GenreFilterBar';
 import TopTenRow from '../components/TopTenRow';
 import ContentRow from '../components/ContentRow';
+import PropellerAdsZone from '../components/PropellerAdsZone';
 import { HeroSkeleton, RowSkeleton } from '../components/Skeletons';
 import {
   getTrending,
@@ -88,6 +89,12 @@ export default function HomePage() {
           <>
             <TopTenRow items={top10Items} title={t('sections.top10Today')} />
             <ContentRow title={t('sections.trendingNow')} items={trendingItems} />
+
+            {/* Monetag Banner Ad — between rows, minimal disruption */}
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem 0 1rem' }}>
+              <PropellerAdsZone zoneId="11900789" size="rectangle" />
+            </div>
+
             <ContentRow title={t('sections.newReleases')} items={newReleases} />
             <ContentRow title={t('sections.popularTV')} items={popularTV} />
           </>

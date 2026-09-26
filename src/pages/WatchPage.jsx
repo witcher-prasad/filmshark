@@ -113,7 +113,7 @@ export default function WatchPage() {
 
         {/* PropellerAds Leaderboard — highest CPM placement, below the player */}
         <div style={{ margin: '0.5rem 0 1.5rem', display: 'flex', justifyContent: 'center' }}>
-          <PropellerAdsZone zoneId="ZONE_ID" size="leaderboard" />
+          <PropellerAdsZone zoneId="11900789" size="leaderboard" />
         </div>
 
         {/* Media Details */}
@@ -262,7 +262,7 @@ export default function WatchPage() {
 
         {/* PropellerAds Rectangle — between cast info and similar titles */}
         <div style={{ margin: '2rem 0', display: 'flex', justifyContent: 'center' }}>
-          <PropellerAdsZone zoneId="ZONE_ID" size="rectangle" />
+          <PropellerAdsZone zoneId="11900789" size="rectangle" />
         </div>
 
         {/* Similar Titles */}
