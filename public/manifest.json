@@ -1,0 +1,54 @@
+{
+  "name": "FilmShark - Movies & TV Streaming",
+  "short_name": "FilmShark",
+  "description": "Stream thousands of movies and TV series in 4K & HD quality on any device without registration.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#060a0f",
+  "theme_color": "#060a0f",
+  "lang": "en",
+  "categories": ["entertainment", "movies", "video"],
+  "icons": [
+    {
+      "src": "/logo icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "48x48 96x96",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Movies",
+      "url": "/movies",
+      "description": "Explore popular and trending movies"
+    },
+    {
+      "name": "TV Shows",
+      "url": "/tv",
+      "description": "Browse top television series and episodes"
+    },
+    {
+      "name": "Trending",
+      "url": "/trending",
+      "description": "See what is trending right now"
+    },
+    {
+      "name": "Anime",
+      "url": "/anime",
+      "description": "Watch popular and top-rated anime"
+    }
+  ]
+}
