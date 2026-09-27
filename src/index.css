@@ -1754,18 +1754,84 @@ input {
   color: #cbd5e1;
 }
 
-@media (max-width: 640px) {
+.search-esc-icon {
+  display: none;
+}
+.search-esc-text {
+  display: inline;
+}
+
+@media (max-width: 768px) {
   .search-modal-backdrop {
-    padding: 0;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 0 !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    z-index: 140 !important;
+    background: #090e17 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
+
   .search-modal-box {
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0;
-    border: none;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(101, 255, 187, 0.2) !important;
+    background: #090e17 !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    animation: none !important;
   }
+
+  .search-modal-input-row {
+    padding: 0.75rem 0.9rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: #0d1522 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .search-modal-input {
+    font-size: 1rem !important;
+  }
+
+  .search-esc-text {
+    display: none !important;
+  }
+
+  .search-esc-icon {
+    display: block !important;
+  }
+
+  .search-modal-esc-badge {
+    padding: 0.35rem 0.5rem !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
   .search-modal-body {
-    max-height: calc(100vh - 130px);
+    flex: 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0.85rem 1rem 1.5rem !important;
+  }
+
+  .search-modal-footer {
+    display: none !important;
   }
 }
 
@@ -2155,15 +2221,24 @@ input {
    Comprehensive Mobile & Tablet Responsiveness
    ───────────────────────────────────────────────────────────────────────────── */
 
-/* Navbar responsive adjustments */
-@media (max-width: 1180px) {
+@media (max-width: 768px) {
   .nav-links {
     display: none !important;
   }
+}
 
-  .mobile-menu-toggle {
+@media (max-width: 1180px) and (min-width: 769px) {
+  .nav-links {
     display: flex !important;
+    gap: 0.65rem;
   }
+  .nav-link {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 1180px) {
 
   .navbar {
     padding: 0.65rem 1.25rem;
@@ -2171,10 +2246,6 @@ input {
 
   .brand-logo-img {
     height: 38px;
-  }
-
-  .navbar-search-trigger {
-    padding: 0.45rem 0.75rem;
   }
 
   .nav-install-btn {
@@ -2192,47 +2263,375 @@ input {
     height: 34px;
   }
 
-  .navbar-search-trigger {
-    padding: 0.4rem 0.55rem;
-  }
-
-  .navbar-search-trigger span {
-    display: none !important;
-  }
-
   .nav-install-btn {
-    display: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    border-radius: 7px;
   }
 }
 
 @media (max-width: 480px) {
   .brand-logo-img {
-    height: 30px;
+    height: 28px;
   }
 
   .navbar {
     padding: 0.45rem 0.75rem;
   }
+
+  .navbar-actions {
+    gap: 0.45rem;
+  }
+
+  .nav-install-btn {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.75rem;
+  }
+
+  .lang-selector {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.78rem;
+  }
 }
 
-/* Mobile Drawer Menu */
-.mobile-drawer-menu {
-  position: fixed;
-  top: 58px;
-  inset-inline: 0;
-  background: rgba(6, 10, 15, 0.98);
-  border-bottom: 1px solid rgba(101, 255, 187, 0.22);
-  padding: 1.25rem 1.25rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  z-index: 140;
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
-  max-height: calc(100vh - 60px);
-  overflow-y: auto;
-  animation: fadeInDown 0.2s ease-out;
+/* ─────────────────────────────────────────────────────────────────────────────
+   Custom Native Bottom Sheet Menu (Mobile Only, Directly Above Bottom Nav)
+   ───────────────────────────────────────────────────────────────────────────── */
+.custom-bottom-sheet-root,
+.custom-bottom-sheet-backdrop,
+.custom-bottom-sheet-panel,
+.vaul-bottom-sheet-overlay,
+.vaul-bottom-sheet-content,
+.bottom-sheet-backdrop,
+.bottom-sheet-panel {
+  display: none;
+}
+
+@keyframes slideUpSheet {
+  0% {
+    transform: translateY(100%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDownSheet {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOutOverlay {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .custom-bottom-sheet-root {
+    display: block !important;
+  }
+
+  .custom-bottom-sheet-backdrop,
+  .vaul-bottom-sheet-overlay,
+  .bottom-sheet-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+    background: rgba(4, 7, 11, 0.75) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 140 !important;
+    display: block !important;
+  }
+
+  .custom-bottom-sheet-root.is-open .custom-bottom-sheet-backdrop {
+    animation: fadeInOverlay 0.22s ease-out forwards;
+  }
+
+  .custom-bottom-sheet-root.is-closing .custom-bottom-sheet-backdrop {
+    animation: fadeOutOverlay 0.22s ease-in forwards;
+  }
+
+  .custom-bottom-sheet-panel,
+  .vaul-bottom-sheet-content,
+  .bottom-sheet-panel {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 600px !important;
+    max-height: calc(85vh - 60px) !important;
+    background: #0b121e !important;
+    border-top: 1px solid rgba(101, 255, 187, 0.3) !important;
+    border-left: 1px solid rgba(101, 255, 187, 0.15) !important;
+    border-right: 1px solid rgba(101, 255, 187, 0.15) !important;
+    border-bottom: none !important;
+    border-radius: 20px 20px 0 0 !important;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(101, 255, 187, 0.08) !important;
+    z-index: 145 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    outline: none !important;
+    touch-action: pan-y;
+  }
+
+  .custom-bottom-sheet-root.is-open .custom-bottom-sheet-panel:not(.is-dragging) {
+    animation: slideUpSheet 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  }
+
+  .custom-bottom-sheet-root.is-closing .custom-bottom-sheet-panel:not(.is-dragging) {
+    animation: slideDownSheet 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .bottom-sheet-drag-area {
+    width: 100%;
+    padding: 0.65rem 0 0.25rem;
+    display: flex;
+    justify-content: center;
+    cursor: grab;
+    flex-shrink: 0;
+  }
+
+  .bottom-sheet-drag-handle {
+    width: 42px;
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+  }
+
+  .custom-sheet-header,
+  .vaul-sheet-header,
+  .bottom-sheet-header {
+    height: 52px;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0d1522;
+    flex-shrink: 0;
+  }
+
+  .custom-sheet-title,
+  .vaul-sheet-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .bottom-sheet-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .bottom-sheet-close-btn:hover,
+  .bottom-sheet-close-btn:active {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    border-color: rgba(101, 255, 187, 0.4);
+  }
+
+  .custom-sheet-body,
+  .vaul-sheet-body,
+  .bottom-sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .bottom-sheet-section-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #65FFBB;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .bottom-sheet-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .bottom-sheet-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    cursor: pointer;
+  }
+
+  .bottom-sheet-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  /* Active Tab Styling */
+  .bottom-sheet-item.active {
+    background: rgba(101, 255, 187, 0.12);
+    border: 1px solid rgba(101, 255, 187, 0.4);
+    color: #65FFBB;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(101, 255, 187, 0.08);
+  }
+
+  .bottom-sheet-item.active .bottom-sheet-item-icon {
+    background: rgba(101, 255, 187, 0.2);
+    color: #65FFBB;
+    border-color: rgba(101, 255, 187, 0.5);
+  }
+
+  .bottom-sheet-item.active .item-title {
+    color: #65FFBB;
+    font-weight: 700;
+  }
+
+  .bottom-sheet-item.active .item-arrow {
+    color: #65FFBB;
+    transform: translateX(3px);
+  }
+
+  .bottom-sheet-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    flex-shrink: 0;
+    transition: all 0.18s ease;
+  }
+
+  .bottom-sheet-item-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .item-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+
+  .item-sub {
+    font-size: 0.76rem;
+    color: #64748b;
+  }
+
+  .item-arrow {
+    color: rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+
+  .custom-sheet-footer,
+  .vaul-sheet-footer,
+  .bottom-sheet-footer {
+    padding: 0.85rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0d1522;
+    flex-shrink: 0;
+  }
+
+  .btn-sheet-install {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.25rem;
+    background: #65FFBB;
+    color: #060a0f;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(101, 255, 187, 0.3);
+    letter-spacing: 0.3px;
+  }
+
+  .btn-sheet-install:hover {
+    background: #7affc8;
+    box-shadow: 0 6px 25px rgba(101, 255, 187, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .btn-sheet-install:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Ensure Bottom Sheet and Mobile Bottom Nav are strictly HIDDEN on large screens */
+@media (min-width: 769px) {
+  .custom-bottom-sheet-root,
+  .custom-bottom-sheet-backdrop,
+  .custom-bottom-sheet-panel,
+  .vaul-bottom-sheet-overlay,
+  .vaul-bottom-sheet-content,
+  [data-vaul-drawer],
+  .bottom-sheet-backdrop,
+  .bottom-sheet-panel,
+  .mobile-bottom-nav {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
 }
 
 /* Universal Catalog Grid across All Pages */
@@ -2428,13 +2827,11 @@ input {
 
 /* Modals on Mobile */
 @media (max-width: 640px) {
-  .pwa-modal-backdrop,
-  .search-modal-backdrop {
+  .pwa-modal-backdrop {
     padding: 0.75rem;
   }
 
-  .pwa-modal-card,
-  .search-modal-container {
+  .pwa-modal-card {
     width: 100% !important;
     max-width: 100% !important;
     padding: 1.25rem !important;

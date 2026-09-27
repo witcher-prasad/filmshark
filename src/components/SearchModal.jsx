@@ -194,8 +194,10 @@ export default function SearchModal({ isOpen, onClose }) {
               className="search-modal-esc-badge" 
               onClick={onClose}
               title="Close (Esc)"
+              aria-label="Close search"
             >
-              ESC
+              <span className="search-esc-text">ESC</span>
+              <X size={18} className="search-esc-icon" />
             </button>
           </div>
         </div>

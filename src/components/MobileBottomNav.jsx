@@ -1,20 +1,32 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Film, Tv, Search, Download } from 'lucide-react';
+import { Home, Film, Tv, Search, Menu, X } from 'lucide-react';
 
-export default function MobileBottomNav({ onOpenSearch, onOpenInstall }) {
+export default function MobileBottomNav({ 
+  onOpenSearch, 
+  onToggleMenu, 
+  isMenuOpen, 
+  isSearchOpen, 
+  onCloseAll 
+}) {
   const location = useLocation();
 
-  const isActive = (path) => {
+  const isRouteActive = (path) => {
+    if (isMenuOpen || isSearchOpen) return false;
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
+  };
+
+  const handleNavClick = () => {
+    if (onCloseAll) onCloseAll();
   };
 
   return (
     <nav className="mobile-bottom-nav" aria-label="Mobile Navigation">
       <Link
         to="/"
-        className={`mobile-bottom-item ${isActive('/') ? 'active' : ''}`}
+        className={`mobile-bottom-item ${isRouteActive('/') ? 'active' : ''}`}
+        onClick={handleNavClick}
         aria-label="Home"
       >
         <Home size={20} />
@@ -23,7 +35,8 @@ export default function MobileBottomNav({ onOpenSearch, onOpenInstall }) {
 
       <Link
         to="/movies"
-        className={`mobile-bottom-item ${isActive('/movies') ? 'active' : ''}`}
+        className={`mobile-bottom-item ${isRouteActive('/movies') ? 'active' : ''}`}
+        onClick={handleNavClick}
         aria-label="Movies"
       >
         <Film size={20} />
@@ -32,7 +45,8 @@ export default function MobileBottomNav({ onOpenSearch, onOpenInstall }) {
 
       <Link
         to="/tv"
-        className={`mobile-bottom-item ${isActive('/tv') ? 'active' : ''}`}
+        className={`mobile-bottom-item ${isRouteActive('/tv') ? 'active' : ''}`}
+        onClick={handleNavClick}
         aria-label="TV Series"
       >
         <Tv size={20} />
@@ -41,7 +55,7 @@ export default function MobileBottomNav({ onOpenSearch, onOpenInstall }) {
 
       <button
         type="button"
-        className="mobile-bottom-item"
+        className={`mobile-bottom-item ${isSearchOpen ? 'active' : ''}`}
         onClick={onOpenSearch}
         aria-label="Search"
       >
@@ -51,12 +65,13 @@ export default function MobileBottomNav({ onOpenSearch, onOpenInstall }) {
 
       <button
         type="button"
-        className="mobile-bottom-item highlight"
-        onClick={onOpenInstall}
-        aria-label="Install App"
+        className={`mobile-bottom-item ${isMenuOpen ? 'active' : ''}`}
+        onClick={onToggleMenu}
+        aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
+        aria-expanded={isMenuOpen}
       >
-        <Download size={20} color="#65FFBB" />
-        <span style={{ color: '#65FFBB', fontWeight: 800 }}>App</span>
+        {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        <span>Menu</span>
       </button>
     </nav>
   );

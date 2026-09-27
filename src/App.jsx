@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SearchModal from './components/SearchModal';
 import MobileBottomNav from './components/MobileBottomNav';
+import MobileMenuBottomSheet from './components/MobileMenuBottomSheet';
 import InstallAppModal from './components/InstallAppModal';
 
 import HomePage from './pages/HomePage';
@@ -21,6 +22,7 @@ const KDramaPage = lazy(() => import('./pages/KDramaPage'));
 export default function App() {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [installModalOpen, setInstallModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Global keyboard shortcut listener: Cmd+K / Ctrl+K and /
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function App() {
       // Escape closes modal
       if (e.key === 'Escape') {
         setSearchModalOpen(false);
+        setMobileMenuOpen(false);
       }
     };
 
@@ -52,7 +55,6 @@ export default function App() {
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         {/* Top FilmShark Navigation */}
         <Navbar 
-          onOpenSearch={() => setSearchModalOpen(true)}
           onOpenInstall={() => setInstallModalOpen(true)}
         />
 
@@ -80,7 +82,26 @@ export default function App() {
 
         {/* Native App-Style Mobile Bottom Navigation Bar */}
         <MobileBottomNav
-          onOpenSearch={() => setSearchModalOpen(true)}
+          onOpenSearch={() => {
+            setMobileMenuOpen(false);
+            setSearchModalOpen(prev => !prev);
+          }}
+          onToggleMenu={() => {
+            setSearchModalOpen(false);
+            setMobileMenuOpen(prev => !prev);
+          }}
+          isMenuOpen={mobileMenuOpen}
+          isSearchOpen={searchModalOpen}
+          onCloseAll={() => {
+            setSearchModalOpen(false);
+            setMobileMenuOpen(false);
+          }}
+        />
+
+        {/* Vaul Native Bottom Sheet Menu (Sits directly top to the bottom navbar) */}
+        <MobileMenuBottomSheet
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
           onOpenInstall={() => setInstallModalOpen(true)}
         />
 

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Search, Menu, X, Check, Download } from 'lucide-react';
+import { Check, Download } from 'lucide-react';
 import { SUPPORTED_LANGUAGES } from '../i18n';
+import { usePwaInstall } from '../services/usePwaInstall';
 
-export default function Navbar({ onOpenSearch, onOpenInstall }) {
+export default function Navbar({ onOpenInstall }) {
   const { t, i18n } = useTranslation();
   const [showLangMenu, setShowLangMenu] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isInstalled } = usePwaInstall();
 
   const currentLang = SUPPORTED_LANGUAGES.find(l => l.code === i18n.language) || SUPPORTED_LANGUAGES[0];
-  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPod|iPad/i.test(navigator.platform);
 
   const handleLanguageChange = (code) => {
     i18n.changeLanguage(code);
@@ -24,7 +24,7 @@ export default function Navbar({ onOpenSearch, onOpenInstall }) {
   return (
     <header className="navbar">
       {/* Brand */}
-      <Link to="/" className="navbar-brand" onClick={() => setMobileMenuOpen(false)}>
+      <Link to="/" className="navbar-brand">
         <img
           src="/Logo.svg"
           alt="FilmShark"
@@ -35,7 +35,7 @@ export default function Navbar({ onOpenSearch, onOpenInstall }) {
       </Link>
 
       {/* Desktop Navigation Links */}
-      <nav className="nav-links" aria-label="Main Navigation" style={{ display: mobileMenuOpen ? 'none' : undefined }}>
+      <nav className="nav-links" aria-label="Main Navigation">
         <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
           {t('nav.home')}
         </Link>
@@ -62,23 +62,8 @@ export default function Navbar({ onOpenSearch, onOpenInstall }) {
         </Link>
       </nav>
 
-      {/* Right Actions */}
+      {/* Right Actions: Language Selector and App Download Button (hidden if already running in downloaded app) */}
       <div className="navbar-actions">
-        {/* Quick Search Trigger with Shortcut */}
-        <button
-          type="button"
-          className="navbar-search-trigger"
-          onClick={onOpenSearch}
-          title={isMac ? "Search (⌘K or /)" : "Search (Ctrl+K or /)"}
-          aria-label="Open search dialog"
-        >
-          <Search size={16} color="#65FFBB" />
-          <span style={{ color: '#94a3b8' }}>{t('nav.searchPlaceholder')}</span>
-          <span className="navbar-search-badge">
-            {isMac ? '⌘K' : 'Ctrl+K'}
-          </span>
-        </button>
-
         {/* Production-Grade Language Dropdown */}
         <div style={{ position: 'relative' }}>
           <button
@@ -160,86 +145,19 @@ export default function Navbar({ onOpenSearch, onOpenInstall }) {
           )}
         </div>
 
-        {/* PWA Install App Button */}
-        <button
-          type="button"
-          className="btn-get-app nav-install-btn"
-          onClick={onOpenInstall}
-          title="Install FilmShark App on Device"
-        >
-          <Download size={14} />
-          <span>App</span>
-        </button>
-
-        {/* Mobile menu trigger */}
-        <button 
-          type="button" 
-          className="lang-selector mobile-menu-toggle" 
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle navigation menu"
-        >
-          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* PWA Install App Button (hidden if user is already using the downloaded app) */}
+        {!isInstalled && (
+          <button
+            type="button"
+            className="btn-get-app nav-install-btn"
+            onClick={onOpenInstall}
+            title="Install FilmShark App on Device"
+          >
+            <Download size={14} />
+            <span>App</span>
+          </button>
+        )}
       </div>
-
-      {/* Mobile Drawer Navigation */}
-      {mobileMenuOpen && (
-        <div className="mobile-drawer-menu">
-          <button
-            type="button"
-            className="player-nav-btn next-highlight"
-            style={{ width: '100%', justifyContent: 'center', padding: '0.7rem 1rem' }}
-            onClick={() => {
-              setMobileMenuOpen(false);
-              if (onOpenInstall) onOpenInstall();
-            }}
-          >
-            <Download size={16} />
-            <span>Install FilmShark App</span>
-          </button>
-
-          <button
-            type="button"
-            className="navbar-search-trigger"
-            style={{ width: '100%', justifyContent: 'space-between', padding: '0.65rem 1rem' }}
-            onClick={() => {
-              setMobileMenuOpen(false);
-              if (onOpenSearch) onOpenSearch();
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <Search size={16} color="#65FFBB" />
-              <span>{t('nav.searchPlaceholder')}</span>
-            </div>
-            <span className="navbar-search-badge">{isMac ? '⌘K' : 'Ctrl+K'}</span>
-          </button>
-
-          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.home')}
-          </Link>
-          <Link to="/movies" className={`nav-link ${isActive('/movies') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.movies')}
-          </Link>
-          <Link to="/tv" className={`nav-link ${isActive('/tv') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.tvShows')}
-          </Link>
-          <Link to="/trending" className={`nav-link ${isActive('/trending') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.trending')}
-          </Link>
-          <Link to="/top10" className={`nav-link ${isActive('/top10') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.top10')}
-          </Link>
-          <Link to="/anime" className={`nav-link ${isActive('/anime') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.anime')}
-          </Link>
-          <Link to="/kdrama" className={`nav-link ${isActive('/kdrama') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.kdrama')}
-          </Link>
-          <Link to="/faqs" className={`nav-link ${isActive('/faqs') ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            {t('nav.faqs')}
-          </Link>
-        </div>
-      )}
     </header>
   );
 }
